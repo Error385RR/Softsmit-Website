@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/Header";
 import { WhatsAppLoader } from "@/components/layout/WhatsAppLoader";
 import { site } from "@/content/site";
 import { getContactMethods } from "@/lib/contact";
+import { Analytics } from "@vercel/analytics/next";
 
 const fraunces = localFont({ src: "./fonts/fraunces.woff2", variable: "--font-fraunces", weight: "500", display: "swap" });
 
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
         <Footer />
         {whatsappHref ? <WhatsAppLoader href={whatsappHref} /> : null}
+        <Analytics />
       </body>
     </html>
   );
