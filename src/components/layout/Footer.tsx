@@ -1,15 +1,17 @@
 import { AppLink as Link } from "@/components/ui/AppLink";
 import { ContactMethods } from "@/components/ui/ContactMethods";
 import { site } from "@/content/site";
+import { getSettings } from "@/lib/settings";
 import { Logo } from "./Logo";
 
-export function Footer() {
+export async function Footer() {
+  const { tagline } = await getSettings();
   return (
     <footer className="mt-8 border-t border-line">
       <div className="container-page grid gap-10 py-12 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <Logo />
-          <p className="mt-4 max-w-xs text-muted">{site.tagline}</p>
+          <p className="mt-4 max-w-xs text-muted">{tagline}</p>
         </div>
         <nav aria-label="Footer">
           <h2 className="text-sm font-semibold">Explore</h2>

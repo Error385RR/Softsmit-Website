@@ -38,3 +38,26 @@ Milestone 1 (foundation + homepage) complete. Services, Process, About, FAQ and 
 - Projects: the data type and `src/content/projects.ts` exist, but no `/projects` route is created until there is real work to show.
 - WhatsApp bubble appears only when `NEXT_PUBLIC_WHATSAPP_NUMBER` is set, loads after the page is idle, and can be dismissed for the session.
 - `NEXT_PUBLIC_*` values are baked in at build time: restart `npm run dev` or rebuild after changing them.
+
+## Dashboard (Phase A: site settings)
+The owner dashboard lives at `/admin`. It edits contact details, the WhatsApp button and a few wording settings. Public pages stay static and rebuild automatically when you save. If Supabase is not configured (or is unreachable) the site simply uses the built-in defaults from `src/content/site.ts` and your env vars.
+
+### One-time setup
+1. Create a free project at supabase.com.
+2. **Authentication > Users > Add user**: create your admin login (email + password, tick "Auto confirm").
+3. **Authentication > Sign In / Providers**: turn **off** "Allow new users to sign up".
+4. **SQL Editor**: open `supabase/schema.sql`, replace both `YOUR_ADMIN_EMAIL` (lowercase, same as step 2), paste and run.
+5. **Project Settings > API**: copy the Project URL and the anon (publishable) key into `.env.local`:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=...
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+   ADMIN_EMAIL=you@example.com
+   ```
+6. Restart `npm run dev`, open `/admin/login`.
+7. On Vercel add the same three variables (Project Settings > Environment Variables) and redeploy.
+
+### Notes
+- Only `ADMIN_EMAIL` can sign in, and the database independently allows only that email to write.
+- `NEXT_PUBLIC_*` values are baked in at build time. After changing them, delete the `.next` folder and rebuild, otherwise an old build cache can keep the old values.
+- Free Supabase projects may pause after about a week without activity (as far as I know). Public pages keep working from the last build; open the Supabase dashboard to resume the project.
+- Nothing in `/admin` is linked from the public site and it is marked `noindex`.

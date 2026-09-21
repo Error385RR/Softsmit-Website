@@ -1,13 +1,14 @@
-import { site } from "@/content/site";
+import { getSettings } from "@/lib/settings";
 
 export type ContactMethod = { id: "email" | "phone" | "whatsapp"; label: string; value: string; href: string };
 
-/** Builds the contact methods that have actually been configured. */
-export function getContactMethods(): ContactMethod[] {
-  const { email, phone, whatsapp } = site.contact;
+/** Builds the contact methods that are currently configured (dashboard settings, else env defaults). */
+export async function getContactMethods(): Promise<ContactMethod[]> {
+  const { email, phone, whatsapp } = await getSettings();
   const methods: ContactMethod[] = [];
   if (whatsapp) {
-    methods.push({ id: "whatsapp", label: "WhatsApp", value: `+${whatsapp.replace(/\D/g, "")}`, href: `https://wa.me/${whatsapp.replace(/\D/g, "")}` });
+    const digits = whatsapp.replace(/\D/g, "");
+    methods.push({ id: "whatsapp", label: "WhatsApp", value: `+${digits}`, href: `https://wa.me/${digits}` });
   }
   if (email) methods.push({ id: "email", label: "Email", value: email, href: `mailto:${email}` });
   if (phone) methods.push({ id: "phone", label: "Phone", value: phone, href: `tel:${phone.replace(/[^\d+]/g, "")}` });

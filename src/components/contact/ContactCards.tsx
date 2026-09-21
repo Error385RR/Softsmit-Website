@@ -2,8 +2,8 @@ import { getContactMethods } from "@/lib/contact";
 
 const hints = { whatsapp: "Message us directly", email: "Send us the details", phone: "Speak to us" } as const;
 
-export function ContactCards() {
-  const methods = getContactMethods();
+export async function ContactCards() {
+  const methods = await getContactMethods();
   if (methods.length === 0) {
     return process.env.NODE_ENV !== "production" ? (
       <p className="rounded-md border border-dashed border-amber p-4 text-sm text-muted">
