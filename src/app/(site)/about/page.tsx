@@ -3,8 +3,7 @@ import { PersonBlock } from "@/components/about/PersonBlock";
 import { AppLink as Link } from "@/components/ui/AppLink";
 import { CtaSection } from "@/components/ui/CtaSection";
 import { PageIntro } from "@/components/ui/PageIntro";
-import { aboutContent as c } from "@/content/about";
-import { getServices } from "@/lib/content";
+import { getAbout, getServices } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "About",
@@ -13,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const services = await getServices();
+  const [services, c] = await Promise.all([getServices(), getAbout()]);
   return (
     <>
       <PageIntro title={c.title} intro={c.intro} />

@@ -16,7 +16,7 @@ export function PersonBlock({ person, fallback }: { person: AboutPerson; fallbac
       )}
       {!hasBio && process.env.NODE_ENV !== "production" ? (
         <p className="mt-6 rounded-md border border-dashed border-amber p-4 text-sm text-muted">
-          <strong className="text-fg">Placeholder (development only):</strong> add your name, role and a short bio to <code>person</code> in <code>src/content/about.ts</code>. This note is hidden in production.
+          <strong className="text-fg">Placeholder (development only):</strong> add your name, role and a short bio in the dashboard under About. This note is hidden in production.
         </p>
       ) : null}
     </div>

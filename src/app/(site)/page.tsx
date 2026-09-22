@@ -74,14 +74,16 @@ export default async function HomePage() {
         </p>
       </Section>
 
-      <Section id="faq" title={c.faqTitle} tone="tinted">
-        <FaqList items={faqs} />
-        <p className="mt-8">
-          <Link href="/faq" className="font-medium text-accent-text underline underline-offset-4 hover:no-underline">
-            See all questions
-          </Link>
-        </p>
-      </Section>
+      {faqs.length > 0 ? (
+        <Section id="faq" title={c.faqTitle} tone="tinted">
+          <FaqList items={faqs} />
+          <p className="mt-8">
+            <Link href="/faq" className="font-medium text-accent-text underline underline-offset-4 hover:no-underline">
+              See all questions
+            </Link>
+          </p>
+        </Section>
+      ) : null}
 
       <TestimonialsSection />
 

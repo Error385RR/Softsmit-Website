@@ -1,11 +1,11 @@
-import type { AboutPerson } from "./types";
+import type { AboutContent } from "./types";
 
 /**
  * About page content. Everything here is editable.
  * `person` is intentionally empty: fill in name, role and bio when you are ready.
  * While empty, the About page shows a clearly marked placeholder in development only.
  */
-export const aboutContent = {
+export const aboutContent: AboutContent = {
   title: "About Softsmith",
   intro: "Softsmith is an independent software studio building practical digital solutions for small businesses.",
   philosophy: {
@@ -27,7 +27,7 @@ export const aboutContent = {
   behind: {
     title: "Who is behind Softsmith",
     fallback: "Softsmith is run by an independent software developer who builds and delivers every project directly.",
-    person: {} as AboutPerson,
+    person: {},
   },
   capabilitiesTitle: "What we can build",
-} as const;
+};
