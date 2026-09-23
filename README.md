@@ -16,18 +16,16 @@ npm run preview              # builds, then serves the production build
 ```
 
 ## Where to edit things
+| What | Where |
+| --- | --- |
+| Brand name, tagline, nav labels, CTA text, feature switches | `src/content/site.ts` |
+| Services | `src/content/services.ts` |
+| Process steps | `src/content/process.ts` |
+| FAQ entries | `src/content/faq.ts` |
+| Homepage copy | `src/content/home.ts` |
+| Email / phone / WhatsApp | `.env.local` (`NEXT_PUBLIC_*`, see `.env.example`) |
+| Colours and theme | `src/app/globals.css` |
 
---------------------------------------------------------------------------------------------------------------------
-|                      What                                   |                  Where                             |
-| ---                                                         | ---                                                |  
-| Brand name, tagline, nav labels, CTA text, feature switches | `src/content/site.ts`                              |  
-| Services                                                    | `src/content/services.ts`                          |
-| Process steps                                               | `src/content/process.ts`                           |
-| FAQ entries                                                 | `src/content/faq.ts`                               |
-| Homepage copy                                               | `src/content/home.ts`                              |
-| Email / phone / WhatsApp                                    | `.env.local` (`NEXT_PUBLIC_*`, see `.env.example`) |
-| Colours and theme                                           | `src/app/globals.css`                              |
---------------------------------------------------------------------------------------------------------------------
 Content is read through `src/lib/content.ts`, so it can later move to Supabase or a CMS without touching components.
 
 ## Status
@@ -79,3 +77,29 @@ Public pages stay static and rebuild automatically when you save. If Supabase is
 - `NEXT_PUBLIC_*` values are baked in at build time. After changing them, delete the `.next` folder and rebuild, otherwise an old build cache can keep the old values.
 - Free Supabase projects may pause after about a week without activity (as far as I know). Public pages keep working from the last build; open the Supabase dashboard to resume the project.
 - Nothing in `/admin` is linked from the public site and it is marked `noindex`.
+
+## Quote form (Milestone 3)
+The "Request a Quote" form on `/contact` posts to `/api/contact`, which validates the submission on the server and emails it via Gmail. There is no database for quote requests yet — email is the record.
+
+### Setup: a Gmail App Password
+Gmail requires an **App Password** rather than your normal password for this kind of sending.
+1. Turn on 2-Step Verification on the Gmail account you want to send from (Google Account > Security).
+2. Go to Google Account > Security > **App passwords**, create one (name it "Softsmith website"), and copy the 16-character password.
+3. Add to `.env.local`:
+   ```
+   GMAIL_USER=you@gmail.com
+   GMAIL_APP_PASSWORD=the16characterpassword
+   QUOTE_TO_EMAIL=you@gmail.com
+   ```
+   `QUOTE_TO_EMAIL` is where requests are delivered — it can be a different address than the sender, or left unset to default to `GMAIL_USER`.
+4. Restart the server. On Vercel, add the same three variables under Project Settings > Environment Variables (mark them **Sensitive**) and redeploy.
+
+### Development mode
+If those three variables aren't set, submissions still succeed — the email is printed to the server console instead of sent. This lets you build and test the form before Gmail is configured, and it's what happens automatically in local development until you add real credentials.
+
+### What's built in
+- Server-side validation on every field, independent of the browser (a request can't bypass it).
+- A hidden honeypot field: if it's filled in, the request is silently discarded but still reports success, so automated spam tools can't tell they were caught.
+- A basic rate limit (5 submissions per IP per 10 minutes) to blunt accidental or automated flooding. It resets on redeploy — a lightweight v1 safeguard, not a hard security boundary.
+- If sending fails (bad credentials, Gmail unreachable), the visitor sees a clear error and the direct contact methods (WhatsApp, email, phone) as a fallback, within 8 seconds — it never hangs waiting on a slow or dead mail server.
+- The "Service needed" dropdown is generated from whatever services are currently visible in the dashboard, so it stays in sync automatically.

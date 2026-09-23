@@ -9,7 +9,7 @@
 
 do $$
 declare
-  admin_email text := 'weberchris44@gmail.com';   -- <<< EDIT THIS LINE ONLY
+  admin_email text := 'YOUR_ADMIN_EMAIL';   -- <<< EDIT THIS LINE ONLY
 begin
   admin_email := lower(trim(admin_email));
   if admin_email = 'your_admin_email'

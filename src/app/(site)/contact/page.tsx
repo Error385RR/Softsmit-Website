@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { ContactCards } from "@/components/contact/ContactCards";
+import { QuoteForm } from "@/components/contact/QuoteForm";
 import { PageIntro } from "@/components/ui/PageIntro";
+import { getServices } from "@/lib/content";
+import { getContactMethods } from "@/lib/contact";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -8,7 +11,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const [services, contactMethods] = await Promise.all([getServices(), getContactMethods()]);
   return (
     <>
       <PageIntro title="Get in touch" intro="Tell us what you need, or reach out directly. You don't need to know exactly what you want yet." />
@@ -25,8 +29,10 @@ export default function ContactPage() {
           <h2 id="quote-heading" className="font-display text-3xl font-medium">
             Request a Quote
           </h2>
-          {/* Milestone 3 replaces this notice with the quote form. */}
-          <p className="mt-4 max-w-xl text-lg text-muted">The online quote form is being finished. In the meantime, contact us using any of the methods above.</p>
+          <p className="mt-3 max-w-xl text-muted">Fields marked * are required. We&apos;ll get back to you based on what you tell us here.</p>
+          <div className="mt-8 max-w-2xl">
+            <QuoteForm services={services} contactMethods={contactMethods} />
+          </div>
         </div>
       </section>
     </>
