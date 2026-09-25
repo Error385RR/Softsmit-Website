@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { CtaSection } from "@/components/ui/CtaSection";
 import { PageIntro } from "@/components/ui/PageIntro";
 import { getServices } from "@/lib/content";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Services",
   description: "Websites and e-commerce, web applications, automation and integrations, and custom solutions for small businesses.",
-  alternates: { canonical: "/services" },
-};
+  path: "/services",
+});
 
 export default async function ServicesPage() {
   const services = await getServices();

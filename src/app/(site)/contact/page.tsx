@@ -4,12 +4,13 @@ import { QuoteForm } from "@/components/contact/QuoteForm";
 import { PageIntro } from "@/components/ui/PageIntro";
 import { getServices } from "@/lib/content";
 import { getContactMethods } from "@/lib/contact";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Contact",
   description: "Request a quote or contact Softsmith by WhatsApp, email or phone.",
-  alternates: { canonical: "/contact" },
-};
+  path: "/contact",
+});
 
 export default async function ContactPage() {
   const [services, contactMethods] = await Promise.all([getServices(), getContactMethods()]);

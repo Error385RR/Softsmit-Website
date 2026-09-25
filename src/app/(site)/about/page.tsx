@@ -4,12 +4,13 @@ import { AppLink as Link } from "@/components/ui/AppLink";
 import { CtaSection } from "@/components/ui/CtaSection";
 import { PageIntro } from "@/components/ui/PageIntro";
 import { getAbout, getServices } from "@/lib/content";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About",
   description: "Softsmith is an independent software studio building practical, affordable digital solutions for small businesses.",
-  alternates: { canonical: "/about" },
-};
+  path: "/about",
+});
 
 export default async function AboutPage() {
   const [services, c] = await Promise.all([getServices(), getAbout()]);

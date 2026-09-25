@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { CtaSection } from "@/components/ui/CtaSection";
 import { PageIntro } from "@/components/ui/PageIntro";
 import { getProcessSteps } from "@/lib/content";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Process",
   description: "How working with Softsmith goes, from telling us what you need to launch. No technical knowledge required.",
-  alternates: { canonical: "/process" },
-};
+  path: "/process",
+});
 
 const goodToKnow = [
   { title: "You don't need to understand software", body: "You describe the business problem. Choosing the right approach is our job, and we explain each decision in plain language." },

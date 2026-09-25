@@ -103,3 +103,27 @@ If those three variables aren't set, submissions still succeed — the email is 
 - A basic rate limit (5 submissions per IP per 10 minutes) to blunt accidental or automated flooding. It resets on redeploy — a lightweight v1 safeguard, not a hard security boundary.
 - If sending fails (bad credentials, Gmail unreachable), the visitor sees a clear error and the direct contact methods (WhatsApp, email, phone) as a fallback, within 8 seconds — it never hangs waiting on a slow or dead mail server.
 - The "Service needed" dropdown is generated from whatever services are currently visible in the dashboard, so it stays in sync automatically.
+
+## Quality pass (Milestone 4)
+A full pass across accessibility, performance, SEO, and error handling — fixing real issues found along the way, not just documenting them.
+
+### SEO infrastructure (new)
+- `robots.txt` and `sitemap.xml` are generated automatically (`src/app/robots.ts`, `src/app/sitemap.ts`), listing the six public pages and excluding `/admin`.
+- Every page has its own title, meta description, canonical URL, Open Graph tags, and Twitter card tags — set explicitly rather than relying on Next.js's fallback inheritance, which isn't reliable for these.
+- A branded Open Graph preview image is generated at build time (`src/app/opengraph-image.tsx`) and used by every page, so links shared on social media or messaging apps show a proper card instead of nothing.
+- Set `NEXT_PUBLIC_SITE_URL` to your real domain before deploying — it's used to build all of the above.
+
+### Error handling (new)
+- A branded 404 page (`not-found.tsx`) for any URL that doesn't exist.
+- If a page crashes, a friendly error screen appears in its place — the header, footer, and navigation stay fully working around it, and there's a "Try again" button and a link to contact you directly. The visitor never sees a raw stack trace.
+- This applies separately to the public site and the admin dashboard, so a problem in one never takes down the other.
+
+### Verified (not just assumed)
+- **Accessibility:** every page has exactly one `<h1>` and no skipped heading levels; text contrast exceeds WCAG AA (4.5:1) in both light and dark mode; full keyboard navigation with no traps, tested end to end on every page.
+- **Reduced motion:** every animation (the hero graphic, the WhatsApp button's entrance) is neutralized when the visitor's system requests reduced motion.
+- **Performance:** every public page loads in under 1 second on a throttled 1 Mbps connection and stays under the 200 KB budget.
+- **Links:** every internal link across the site resolves correctly; external links open safely in a new tab.
+
+### Two real bugs found and fixed during this pass
+- Setting explicit Open Graph metadata on a page silently disabled Next.js's automatic detection of the preview image — now fixed by referencing it explicitly on every page.
+- The Fraunces font used for the preview image needed a different file format than the one used on the website itself; without it, the image failed to generate at all.

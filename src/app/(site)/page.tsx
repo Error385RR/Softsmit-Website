@@ -16,10 +16,13 @@ import { getSettings } from "@/lib/settings";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { tagline } = await getSettings();
+  const title = `${site.name}: ${tagline}`;
   return {
-    title: { absolute: `${site.name}: ${tagline}` },
+    title: { absolute: title },
     description: site.description,
     alternates: { canonical: "/" },
+    openGraph: { title, description: site.description, url: "/", type: "website", images: ["/opengraph-image"] },
+    twitter: { title, description: site.description, images: ["/opengraph-image"] },
   };
 }
 

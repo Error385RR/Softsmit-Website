@@ -3,12 +3,13 @@ import { CtaSection } from "@/components/ui/CtaSection";
 import { FaqList } from "@/components/ui/FaqList";
 import { PageIntro } from "@/components/ui/PageIntro";
 import { getFaqs } from "@/lib/content";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "FAQ",
   description: "Answers to common questions about what Softsmith builds, how quotes work, and working with small businesses.",
-  alternates: { canonical: "/faq" },
-};
+  path: "/faq",
+});
 
 export default async function FaqPage() {
   const faqs = await getFaqs();
